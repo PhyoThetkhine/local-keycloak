@@ -1,28 +1,38 @@
-Keycloak
-========
+# My Local Keycloak
 
-To understand the contents of your Keycloak installation, see the [directory structure guide](https://www.keycloak.org/server/directory-structure).
+Welcome to your local Keycloak development environment! This project uses Docker Compose to easily spin up a local instance of Keycloak with a PostgreSQL database.
 
-To get help configuring Keycloak via the CLI, run:
+## Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
 
-on Linux/Unix:
+## Step-by-Step Setup
 
-    $ bin/kc.sh
+### 1. Start the Containers
+Open your terminal, navigate to this project directory, and run:
+```bash
+docker compose up -d
+```
+*Note: If you run into mount errors because you moved the folder, run `docker compose down` first before starting it up again.*
 
-on Windows:
+### 2. Access Keycloak
+Once the containers are running and healthy, open your browser and go to:
+[http://localhost:8080](http://localhost:8080)
 
-    $ bin\kc.bat
+### 3. Log In
+Click on the **Administration Console** link. Log in using the default credentials configured in `.env.docker`:
+- **Username:** `admin`
+- **Password:** `admin123`
 
-To try Keycloak out in development mode, run: 
+## Directory Structure
+- `conf/`: Contains Keycloak configuration files (e.g., `keycloak.conf`).
+- `providers/`: Drop any custom Keycloak extensions or providers (.jar files) here.
+- `themes/`: Drop any custom UI themes here.
+- `realm-export.json`: A pre-configured realm export. The container is set up to automatically import this on startup (`--import-realm` flag).
 
-on Linux/Unix:
+## Stopping the Server
+When you are done testing, you can stop and remove the containers by running:
+```bash
+docker compose down
+```
 
-    $ bin/kc.sh start-dev
-
-on Windows:
-
-    $ bin\kc.bat start-dev
-
-After the server boots, open http://localhost:8080 in your web browser. The welcome page will indicate that the server is running.
-
-To get started, check out the [configuration guides](https://www.keycloak.org/guides#server).
+*Your database data is persisted in a Docker volume (`postgres_data`), so you won't lose your users or settings when you tear down the containers!*
